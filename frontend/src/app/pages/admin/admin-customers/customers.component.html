@@ -1,0 +1,98 @@
+<div class="wrapper">
+
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <div class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <h1 class="m-0 text-dark"><a class="sidebar-toggle" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a> Clienti</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="content">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-md-5">
+            <div class="card card-widget widget-user">
+              <div class="widget-user-header text-white customer-image"></div>
+              <div class="card-body">
+                <div class="input-group pb-1">
+                  <input [(ngModel)]="query" type="text" class="form-control" name="query" placeholder="Cerca ...">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" (click)="search()" [disabled]="isLoading === true"
+                      type="button"><i class="fa fa-search" aria-hidden="true"></i> Cerca</button>
+                  </div>
+                </div>
+                <div *ngIf="customers" class="scrollabe-div">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Admin</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let user of customers" [class.table-active]="user === selected"
+                        (click)="select(user)">
+                        <td>{{ user.fullName }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.isAdmin ? 'Si' : 'No' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div class="card" *ngIf="selected">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-10">
+                    <h3>{{ selected.fullName }}</h3>
+                  </div>
+                  <div class="col-md-2 text-right">
+                    <div class="btn-group py-0 px-0" role="group">
+                      <button type="button" [class.active]="selected.isAdmin === true" (click)="update({isAdmin: true})"
+                        class="btn btn-primary">Si
+                      </button>
+                      <button type="button" [class.active]="selected.isAdmin === false"
+                        (click)="update({isAdmin: false})" class="btn btn-primary">No
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4>Username: {{ selected.username }} // Email: {{ selected.email}} </h4>
+                  </div>
+                </div>
+                <div class="row pt-2">
+                  <div class="col-md-12">
+                    <div *ngIf="(currentState$ | async).isLoading == false && reservations && selected">
+                      <app-calendar-header [(view)]="view" [(viewDate)]="viewDate" (viewDateChange)="fetchReservation()"
+                        (viewChange)="fetchReservation()"></app-calendar-header>
+                      <hr>
+                      <div class="scrollabe-div pt-2">
+                        <app-user-reversations-table [reservations]="reservations"></app-user-reversations-table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</div>

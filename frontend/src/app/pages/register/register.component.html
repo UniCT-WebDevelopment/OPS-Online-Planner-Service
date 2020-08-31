@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Login page | OPS</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            <div class="col-md-6 d-none d-md-flex bg-image"></div>
+            <div class="col-md-6 bg-light">
+                <div class="main-div d-flex align-items-center py-5">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10 col-xl-7 mx-auto">
+                                <h3 class="display-4">Benvenuto </h3>
+                                <!-- <p class="text-muted mb-4">Create a login split page using Bootstrap 4.</p> -->
+                                <form (ngSubmit)="onSubmit()" ngNativeValidate>
+                                    <div class="form-group mb-3">
+                                        <input [(ngModel)]="form.fullname" name="fullname" type="text" placeholder="Nome e cognome" required autofocus class="form-control px-4">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input [(ngModel)]="form.email" name="email" type="text" placeholder="Indirizzo email" required autofocus class="form-control px-4">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input [(ngModel)]="form.username" name="username" type="text" placeholder="Username" required autofocus class="form-control px-4">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input [(ngModel)]="form.password1" name="password1" type="password" placeholder="Password" required class="form-control px-4">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input [(ngModel)]="form.password2" name="password2" type="password" placeholder="Conferma password" required class="form-control px-4">
+                                    </div>
+                                    <!--
+                                    <div class="custom-control custom-checkbox mb-3">
+                                        <input id="customCheck1" type="checkbox" checked class="custom-control-input">
+                                        <label for="customCheck1" class="custom-control-label">Remember password</label>
+                                    </div>
+                                    -->
+
+                                    <div *ngIf="isLoading == true" class="text-center pb-3">
+                                        <div *ngFor="let number of [0,1,2,3,4,5]" class="mx-2 spinner-grow-sm spinner-grow text-primary" role="status"><span class="sr-only"></span></div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary btn-block text-uppercase mb-2 ">Registrati</button>
+                                </form>
+                                <button [routerLink]="'/login'" type="button" class="btn btn-primary btn-block text-uppercase mb-2 ">Accedi</button>
+                                <br>
+                                <div *ngIf="response?.message">
+                                    <div class="alert {{ response?.error == true ? 'alert-danger' : 'alert-success' }}" role="alert">
+                                        {{response?.message}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </body>
+</html>

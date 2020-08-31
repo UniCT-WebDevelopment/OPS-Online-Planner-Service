@@ -1,0 +1,68 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="https://eu.ui-avatars.com/api/?name={{ ( this.authState$ | async )?.user?.fullName }}&?rounded=true&bold=true&size=512" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">{{ ( this.authState$ | async )?.user?.fullName }}</a>
+            </div>
+        </div>
+
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/plans'" [class.active]="router.url === '/admin/plans'">
+                        <i class="nav-icon far fa-sticky-note"></i>
+                        <p>Appuntamenti</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/business'" [class.active]="router.url === '/admin/business'" >
+                        <i class="nav-icon fas fa-store"></i>
+                        <p>Negozio</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/services'" [class.active]="router.url === '/admin/services'">
+                        <i class="nav-icon fas fa-hands-helping"></i>
+                        <p>Servizi</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/customers'" [class.active]="router.url === '/admin/customers'">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Clienti</p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-user-tag"></i>
+                        <p>Profilo<i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: block;">
+                        <li class="nav-item">
+                            <a (click)="updateUser('email')" class="nav-link" style="cursor: pointer;">
+                                <i class="nav-icon fas fa-at"></i>
+                                <p>Cambia email</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a (click)="updateUser('password')" class="nav-link" style="cursor: pointer;">
+                                <i class="nav-icon fas fa-key"></i>
+                                <p>Cambia password</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a (click)="logout()" class="nav-link" style="cursor: pointer;">
+                                <i class="nav-icon fas fa-door-open"></i>
+                                <p>Disconnetti</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

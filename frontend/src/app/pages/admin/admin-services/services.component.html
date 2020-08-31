@@ -1,0 +1,93 @@
+<div class="wrapper">
+
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <div class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark"><a class="sidebar-toggle" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a> Servizi</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="content">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card card-widget widget-user">
+              <div class="widget-user-header text-white service-image">
+                <!-- <h3 class="widget-user-username text-right">{{ selected.id !== null ? 'Modifica il servizio' : 'Crea un nuovo servizio' }}</h3> -->
+              </div>
+              <div class="card-body">
+                <div class="form-group input-group">
+                  <input type="text" class="form-control" name="name" [(ngModel)]="selected.name"
+                    placeholder="Inserisci il nome del servizio che offri">
+                  <div class="input-group-append">
+                    <button tabindex="-1" (click)="saveService()" type="button" class="btn btn-primary"><i
+                        class="fa {{ selected.id === null ? 'fa-save' : 'fa-edit' }}"></i></button>
+                    <button tabindex="-1" (click)="deleteService()" type="button" class="btn btn-danger"><i
+                        class="fa fa-trash"></i></button>
+                    <button tabindex="-1" (click)="newService()" type="button" class="btn btn-secondary"><i
+                        class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col">
+                    <div class="input-group input-group-sm mb-2 mr-sm-2">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">Durata (m)</div>
+                      </div>
+                      <input [(ngModel)]="selected.durationM" min="0" name="price" type="number"
+                        class="form-control form-control-sm">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="input-group input-group-sm mb-2 mr-sm-2">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">Prezzo (€)</div>
+                      </div>
+                      <input [(ngModel)]="selected.price" min="0" name="price" step=".01" type="number"
+                        class="form-control form-control-sm">
+                    </div>
+                  </div>
+                </div>
+                <textarea rows="3" [(ngModel)]="selected.description"
+                  placeholder="Inserisci una breve descrizione per il servizio" name="description" type="text"
+                  class="mt-1 form-control"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="row row-cols-1 row-cols-md-3">
+              <div class="col mb-4" *ngFor="let service of services; index as i">
+                <div class="card h-100 cardhover" (click)="selectService(service)" >
+                  <div class="card-header">
+                    <h2 class="card-title">{{ service.name }}</h2>
+                  </div>
+                  <div class="card-body clearfix pb-1">
+                    <blockquote class="quote-secondary m-0" *ngIf="service.description !== ''">
+                      <p>{{ service.description }}</p>
+                    </blockquote>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Durata:</b> {{ service.durationM }}m, <b>Prezzo:</b> {{ service.price }}€</li>
+                  </ul>
+                  <div class="card-footer py-1">
+                    <small class="text-muted">{{ service.createdBy && service.createdDate ? 'Creato da: ' + service.createdBy.fullName + ' il ' + (service.createdDate | date:'medium') : 'Creato da ...' }}</small>
+                    <br>
+                    <small class="text-muted">{{ service.updatedBy && service.updatedDate ? 'Modificato da: ' + service.updatedBy.fullName + ' il ' + (service.updatedDate | date:'medium') : 'Modificato da ...' }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</div>

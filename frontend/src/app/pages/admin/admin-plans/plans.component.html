@@ -1,0 +1,202 @@
+<div class="wrapper">
+
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <div class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <h1 class="m-0 text-dark"><a class="sidebar-toggle" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a> Appuntamenti</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="content">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-md-2">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>{{ counters.total }}</h3> <p>Totali</p>
+              </div>
+              <div class="icon"> <i class="ion ion-calendar"></i> </div>
+            </div>
+
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>{{ counters.approved }}</h3> <p>Confermati</p>
+              </div>
+              <div class="icon"> <i class="ion ion-thumbsup"></i> </div>
+            </div>
+
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3>{{ counters.pending }}</h3> <p>Da approvare</p>
+              </div>
+              <div class="icon"> <i class="ion ion-pause"></i> </div>
+            </div>
+
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>{{ counters.rejected }}</h3> <p>Rifiutati</p>
+              </div>
+              <div class="icon"> <i class="ion ion-thumbsdown"></i> </div>
+            </div>
+          </div>
+
+          <div class="col-md-10">
+            <section class="col-lg-12">
+              <div class="card">
+
+                <div class="card-body">
+                  <app-calendar-header [(view)]="view" [(viewDate)]="viewDate" (viewDateChange)="fetchReservation()"
+                    (viewChange)="fetchReservation()"></app-calendar-header>
+                  <hr>
+
+                  <!--
+                    <br>
+
+                    <div class="alert alert-info">
+                      Click on a day or time slot on the view.
+                      <strong *ngIf="clickedDate">You clicked on this time: {{ clickedDate | date:'medium' }}</strong>
+                      <strong *ngIf="clickedColumn != null">You clicked on this column: {{ clickedColumn }}</strong>
+                    </div>
+                    -->
+
+                  <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
+                    <li [ngbNavItem]="1" (click)="fetchReservation()">
+                      <a ngbNavLink>Calendario</a>
+                      <ng-template ngbNavContent>
+
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div *ngIf="isLoading === false && events !== []; else loading">
+                              <div [ngSwitch]="view">
+
+                                <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events"
+                                  [weekStartsOn]="weekStartsOn" [activeDayIsOpen]="activeDayIsOpen"
+                                  (dayClicked)="dayClicked($event.day)"
+                                  (eventClicked)="handleEvent('Clicked', $event.event)"
+                                  (eventTimesChanged)="eventTimesChanged($event)">
+                                </mwl-calendar-month-view>
+
+                                <mwl-calendar-week-view *ngSwitchCase="'week'" [events]="events" [viewDate]="viewDate"
+                                  [weekStartsOn]="weekStartsOn" (eventClicked)="handleEvent('Clicked', $event.event)"
+                                  (eventTimesChanged)="eventTimesChanged($event)"
+                                  (hourSegmentClicked)="handleHourClick($event.date)"
+                                  (beforeViewRender)="beforeWeekViewRender($event)"
+                                  [hourSegmentTemplate]="weekViewHourSegmentTemplate"
+                                  (dayHeaderClicked)="dayClicked($event.day)"
+                                  [currentTimeMarkerTemplate]="currentTimeMarkerTemplate" [dayStartHour]="dayStartHour"
+                                  [dayEndHour]="dayEndHour" [hourSegments]="4" [refresh]="refresh">
+                                </mwl-calendar-week-view>
+
+                                <mwl-calendar-day-view *ngSwitchCase="'day'" [events]="events" [viewDate]="viewDate"
+                                  (eventClicked)="handleEvent('Clicked', $event.event)"
+                                  (eventTimesChanged)="eventTimesChanged($event)"
+                                  (hourSegmentClicked)="handleHourClick($event.date)"
+                                  (beforeViewRender)="beforeDayViewRender($event)"
+                                  [hourSegmentTemplate]="weekViewHourSegmentTemplate"
+                                  [currentTimeMarkerTemplate]="currentTimeMarkerTemplate" [dayStartHour]="dayStartHour"
+                                  [dayEndHour]="dayEndHour" [hourSegments]="4" [refresh]="refresh">
+                                </mwl-calendar-day-view>
+
+                              </div>
+                            </div>
+                            <div *ngIf="isLoading === false && todayIsClose === true" class="text-center pt-4">
+                              <h1>Oggi il negozio e' chiuso</h1>
+                              <img width="45%" src="../../../assets/img/we-are-closed.gif">
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2" (click)="fetchReservation()">
+                      <a ngbNavLink>Lista</a>
+                      <ng-template ngbNavContent>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div *ngIf="isLoading === false && events !== []; else loading">
+                              <div *ngFor="let event of events; index as i">
+                                <div class="row border-bottom py-2">
+                                  <div class="col-md-9">
+                                    <p class="my-0 py-1"><b>Inizio:</b> {{ event.start | date:'medium' }} - <b>Fine:</b>
+                                      {{ event.end | date:'medium' }}</p>
+                                    <p class="my-0 py-1">
+                                      <b>Servizi:</b> {{ joinServices(event.meta.services) }},
+                                      <b>Cliente:</b> {{ event.meta.customer.fullName }}
+                                      <b>Note:</b> {{ event.meta.note ? event.meta.note : 'Nessuna' }}
+                                    </p>
+                                  </div>
+                                  <div class="col-md-3 align-self-center text-right">
+                                    <div class="btn-group" role="group">
+                                      <button type="button" (click)="_changeState('approved', event)"
+                                        [disabled]="event.draggable === false" alt="Approva"
+                                        class="btn {{ event.meta.isApproved === true && event.meta.isReject === false ? 'btn-success' : 'btn-secondary' }}">
+                                        <i class="fa fa-thumbs-up"></i>
+                                      </button>
+                                      <button type="button" (click)="_changeState('pending', event)"
+                                        [disabled]="event.draggable === false" alt="In attesa"
+                                        class="btn {{ event.meta.isApproved === false && event.meta.isReject === false ? 'btn-warning' : 'btn-secondary' }}">
+                                        <i class="fa fa-pause-circle"></i>
+                                      </button>
+                                      <button type="button" (click)="_changeState('reject', event)"
+                                        [disabled]="event.draggable === false" alt="Rifiuta"
+                                        class="btn {{ event.meta.isApproved === false && event.meta.isReject === true ? 'btn-danger' : 'btn-secondary' }}">
+                                        <i class="fa fa-thumbs-down"></i>
+                                      </button>
+                                      <button type="button" alt="Modifica" (click)="editReservation(event.meta)"
+                                        class="btn btn-primary"><i
+                                          class="fa fa-{{ !event.draggable ? 'info-circle' : 'edit'}}"></i></button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div *ngIf="isLoading === false && events?.length === 0" class="text-center pt-4">
+                              <h1>Nessun appuntamento</h1>
+                              <img width="45%" src="../../../assets/img/confused-travolta.gif">
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </li>
+                  </ul>
+
+                  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                  <br>
+                </div>
+              </div>
+            </section>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+</div>
+
+<ng-template #currentTimeMarkerTemplate let-dayStartHour="dayStartHour" let-dayEndHour="dayEndHour"></ng-template>
+
+<ng-template #weekViewHourSegmentTemplate let-segment="segment" let-locale="locale" let-segmentHeight="segmentHeight"
+  let-isTimeLabel="isTimeLabel">
+  <div #segmentElement class="cal-hour-segment" [style.height.px]="segmentHeight"
+    [class.cal-hour-start]="segment.isStart" [class.cal-after-hour-start]="!segment.isStart"
+    [ngClass]="segment.cssClass">
+    <div class="cal-time" *ngIf="isTimeLabel">
+      {{ segment.date | calendarDate:'weekViewHour':locale }}
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div class="text-center">
+    <i class="fa fa-spin fa-spinner fa-5x"></i> <br />
+    Caricamento in corso...
+  </div>
+</ng-template>

@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-md-4 text-left">
+    <div class="btn-group">
+      <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="viewDateChange.next(viewDate)">
+        <i class="fa fa-chevron-left"></i>
+      </div>
+      <div class="btn btn-primary" mwlCalendarToday [(viewDate)]="viewDate"
+        (viewDateChange)="viewDateChange.next(viewDate)">
+        Oggi
+      </div>
+      <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="viewDateChange.next(viewDate)">
+        <i class="fa fa-chevron-right"></i>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 text-center align-self-center">
+    <h4 class="my-0">{{ capitalize(viewDate | calendarDate: view + 'ViewTitle':locale) }}</h4>
+  </div>
+  <div class="col-md-4 text-right">
+    <div class="btn-group">
+      <div class="btn btn-primary" (click)="viewChange.emit(CalendarView.Month)"
+        [class.active]="view === CalendarView.Month">
+        Mese
+      </div>
+      <div class="btn btn-primary" (click)="viewChange.emit(CalendarView.Week)"
+        [class.active]="view === CalendarView.Week">
+        Settimana
+      </div>
+      <div class="btn btn-primary" (click)="viewChange.emit(CalendarView.Day)"
+        [class.active]="view === CalendarView.Day">
+        Giorno
+      </div>
+    </div>
+  </div>
+</div>

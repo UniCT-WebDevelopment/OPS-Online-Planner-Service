@@ -1,0 +1,93 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ isNew ? 'Crea' : 'Modifica' }} un appuntamento ... </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col-md-8 align-self-center">
+        <div class="input-group">
+          <input [disabled]="!isEditable" class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="dateForBootstrap" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button [disabled]="!isEditable" class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 text-right">
+        <ngb-timepicker [disabled]="!isEditable" class="mx-0" [spinners]="false" [(ngModel)]="timeForBootstrap"></ngb-timepicker>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group mb-3" *ngIf="isAdmin">
+          <label for="customer">Cliente</label>
+          <ng-select [items]="people$ | async"
+            bindLabel="fullname"
+            [hideSelected]="true"
+            [trackByFn]="trackByFn"
+            [minTermLength]="2"
+            [loading]="customersLoading"
+            typeToSearchText="Per farvore inserisci almeno 2 caratteri"
+            [typeahead]="customersInput$"
+            [(ngModel)]="reservation.customer"
+            *ngIf="isNew"
+          >
+          <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
+              <div><span [ngOptionHighlight]="search">{{ item.fullname }} <i>({{ item.username }})</i>  </span></div>
+          </ng-template>
+          </ng-select>
+          <input *ngIf="!isNew" [(ngModel)]="reservation.customer.fullName" readonly name="customer" type="text" class="form-control">
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="services">Servizi</label>
+          <ng-select [disabled]="!isEditable" name="services" [items]="services" bindLabel="name" [multiple]="true" [(ngModel)]="reservationServices" (change)="updateTotal()">
+            <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
+                <div><span [ngOptionHighlight]="search">{{item.name}} <small *ngIf="item.description"><i>{{ item.description }}</i></small> </span></div>
+                <div><small><b>Durata (stimata):</b> {{ item.durationM + 'm'}} | <b>Preventivo:</b> {{ item.price + ' Eur' }}</small></div>
+            </ng-template>
+          </ng-select>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="note">Lascia una nota</label>
+          <textarea rows="3" [disabled]="!isEditable" [(ngModel)]="reservation.note" placeholder="..." name="note" type="text" class="form-control"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-5" *ngIf="isAdmin && !isNew" >
+        <div class="btn-group" role="group">
+          <button type="button"
+            [disabled]="!isEditable" [class.active]="reservation.isApproved === true && reservation.isReject === false"
+            (click)="_changeState('approved')"
+            class="btn btn-secondary">Approva
+          </button>
+          <button type="button"
+            [disabled]="!isEditable" [class.active]="reservation.isApproved === false && reservation.isReject === false"
+            (click)="_changeState('pending')"
+            class="btn btn-secondary">Attesa
+          </button>
+          <button type="button"
+            [disabled]="!isEditable" [class.active]="reservation.isApproved === false && reservation.isReject === true"
+            (click)="_changeState('reject')"
+            class="btn btn-secondary">Rifiuta
+          </button>
+        </div>
+      </div>
+      <div class="col-md-{{ isAdmin && !isNew ? '7' : '12' }} align-self-center text-right">
+        <p class="my-0"><b>Durata:</b> {{ totalDuration + 'm' }}, <b>Preventivo:</b> {{ totalPrice + ' €' }}</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" [disabled]="reservationServices.length === 0 || !isEditable" (click)="save()">Salva appuntamento</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  </div>

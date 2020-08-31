@@ -1,0 +1,11 @@
+.scrollabe-div {
+    max-height: 375px;
+    overflow: auto;
+}
+
+.customer-image {
+    background-image: url('../../../../assets/img/people-unsplash.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 275px;
+}

@@ -1,0 +1,14 @@
+textarea {
+    resize: none;
+}
+
+.service-image {
+    background-image: url('../../../../assets/img/customer-unsplash.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 275px;
+}
+
+.cardhover:hover {
+    cursor: pointer;
+}

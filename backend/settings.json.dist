@@ -1,0 +1,17 @@
+{
+	"EMAIL": {
+		"SMTP": "",
+		"PORT": ,
+		"EMAIL": "",
+		"PASSWORD": ""
+	},
+	"SALT": ""
+	"JWT_SECRET_KEY": "",
+	"DATABASE": {
+		"NAME": "",
+		"USER": "",
+		"PASSWORD": "",
+		"HOST": "",
+		"PORT": 0
+	}
+}

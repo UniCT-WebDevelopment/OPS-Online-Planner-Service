@@ -1,0 +1,10 @@
+body{
+    background-color: #f4f6f9;
+}
+
+.sidebar-toggle{
+    color: grey;
+}
+.sidebar-toggle:hover{
+    color: black;
+}

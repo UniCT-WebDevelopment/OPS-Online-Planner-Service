@@ -1,0 +1,26 @@
+<table class="table table-sm">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Inizio</th>
+        <th scope="col">Durata</th>
+        <th scope="col">Servizi</th>
+        <th scope="col">Note</th>
+        <th class="text-center" scope="col">Stato</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reservation of reservations; index as i">
+        <th scope="row">{{ i+1 }}</th>
+        <td>{{ reservation.start }}</td>
+        <td>{{ _differenceInMinutes(reservation.start, reservation.end) + 'm' }}</td>
+        <td>{{ joinServices(reservation.services) }}</td>
+        <td>{{ reservation.note }}</td>
+        <td class="text-center">
+          <span class="badge badge-success" *ngIf="reservation.isApproved === true && reservation.isReject === false" ><i class="fa fa-thumbs-up"></i> Approvato</span>
+          <span class="badge badge-warning" *ngIf="reservation.isApproved === false && reservation.isReject === false" ><i class="fa fa-pause-circle"></i> In attesa</span>
+          <span class="badge badge-danger" *ngIf="reservation.isApproved === false && reservation.isReject === true" ><i class="fa fa-thumbs-down"></i> Rifiutato</span>
+        </td>
+      </tr>
+    </tbody>
+</table>

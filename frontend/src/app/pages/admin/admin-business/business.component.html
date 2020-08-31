@@ -1,0 +1,133 @@
+<div class="wrapper">
+
+  <app-admin-sidebar></app-admin-sidebar>
+
+  <div class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12">
+            <h1 class="m-0 text-dark"><a class="sidebar-toggle" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a> Configurazione negozio</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="content">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-info-circle mr-1"></i> Informazioni</h3>
+                <div class="card-tools">
+                  <ul class="nav nav-pills ml-auto">
+                    <li class="nav-item">
+                      <button (click)="save()" class="btn btn-sm btn-primary">Salva</button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="form-group mb-3">
+                  <label for="name">Nome dell'attivita' commerciale</label>
+                  <input [(ngModel)]="business.name" name="name" type="text" class="form-control">
+                </div>
+                <div class="form-group mb-3">
+                  <label for="name">Email di contatto</label>
+                  <input [(ngModel)]="business.email" name="email" type="email" class="form-control">
+                </div>
+                <div class="form-group mb-3">
+                  <label for="address">Indirizzo del locale</label>
+                  <textarea rows="3" [(ngModel)]="business.address" name="address" type="text"
+                    class="form-control"></textarea>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="description">Descrizione dell'attivita' commericale</label>
+                  <textarea rows="5" [(ngModel)]="business.description" name="description" type="text"
+                    class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-clock mr-1"></i> Orari</h3>
+                <div class="card-tools">
+                  <ul class="nav nav-pills ml-auto">
+                    <li class="nav-item">
+                      <button (click)="save()" class="btn btn-sm btn-primary">Salva</button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card-body">
+                <div style="overflow-x: auto">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="align-middle" rowspan="2">Giorno</th>
+                        <th class="py-1" colspan="2">Mattina</th>
+                        <th class="py-1" colspan="2">Pomeriggio</th>
+                      </tr>
+                      <tr>
+                        <th>Apertura
+                          <button type="button" class="ml-5 btn btn-sm btn-outline-dark border-0"
+                            (click)="pinTime('open', 'morning')">
+                            <i aria-hidden="true" class="fa fa-thumb-tack"></i>
+                          </button>
+                        </th>
+                        <th>Chisura
+                          <button type="button" class="ml-5 btn btn-sm btn-outline-dark border-0"
+                            (click)="pinTime('close', 'morning')">
+                            <i aria-hidden="true" class="fa fa-thumb-tack"></i>
+                          </button>
+                        </th>
+                        <th>Apertura
+                          <button type="button" class="ml-5 btn btn-sm btn-outline-dark border-0"
+                            (click)="pinTime('open', 'afternoon')">
+                            <i aria-hidden="true" class="fa fa-thumb-tack"></i>
+                          </button>
+                        </th>
+                        <th>Chisura
+                          <button type="button" class="ml-5 btn btn-sm btn-outline-dark border-0"
+                            (click)="pinTime('close', 'afternoon')">
+                            <i aria-hidden="true" class="fa fa-thumb-tack"></i>
+                          </button>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let day of timeTable">
+                        <td>{{ day.name }}</td>
+                        <td>
+                          <ngb-timepicker [(ngModel)]="day.morning.open" size="small" [spinners]="false">
+                          </ngb-timepicker>
+                        </td>
+                        <td>
+                          <ngb-timepicker [(ngModel)]="day.morning.close" size="small" [spinners]="false">
+                          </ngb-timepicker>
+                        </td>
+                        <td>
+                          <ngb-timepicker [(ngModel)]="day.afternoon.open" size="small" [spinners]="false">
+                          </ngb-timepicker>
+                        </td>
+                        <td>
+                          <ngb-timepicker [(ngModel)]="day.afternoon.close" size="small" [spinners]="false">
+                          </ngb-timepicker>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</div>
